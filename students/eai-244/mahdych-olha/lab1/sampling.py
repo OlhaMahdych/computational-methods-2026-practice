@@ -1,5 +1,8 @@
 from providers import make_client
 import json
+from utils.lab_logger import custom_logger
+
+logger = custom_logger("lab1")
 
 client, model = make_client("local")
 
@@ -51,7 +54,8 @@ for name, params in experiments:
     with open("sampling_results.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
 
-print("\n=== reproducibility temperature=0 ===", flush=True)
+    logger.info(f"Sampling experiment: {name} — готово")
+
 
 repeat = run(CREATIVE, 10, temperature=0.0)
 results["reproducibility"] = repeat
@@ -59,4 +63,4 @@ results["reproducibility"] = repeat
 with open("sampling_results.json", "w", encoding="utf-8") as f:
     json.dump(results, f, ensure_ascii=False, indent=2)
 
-print("\nSAMPLING ГОТОВО")
+logger.info("Sampling completed")

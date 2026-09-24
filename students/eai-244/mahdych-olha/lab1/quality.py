@@ -1,5 +1,8 @@
 from providers import make_client
 import json
+from utils.lab_logger import custom_logger
+
+logger = custom_logger("lab1")
 
 TASKS = {
     "1_fact": "У якому році було відкрито Київський метрополітен? Відповідай коротко.",
@@ -40,9 +43,12 @@ def run_model(client, model):
                 model=model,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
+                max_tokens=512,
+                timeout=120.0,
             )
             answers.append(r.choices[0].message.content.strip())
         result[task_id] = answers
+        logger.info(f"{model} / {task_id} — готово")
     return result
 
 results = {}

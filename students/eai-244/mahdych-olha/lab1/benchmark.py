@@ -2,6 +2,9 @@ import time
 import statistics
 import csv
 from providers import make_client
+from utils.lab_logger import custom_logger
+
+logger = custom_logger("lab1")
 
 def measure(client, model, prompt):
     t_start = time.perf_counter()
@@ -74,6 +77,6 @@ with open("results.csv", "w", newline="", encoding="utf-8") as f:
     writer.writerows(rows)
 
 for row in rows:
-    print(row)
+    logger.info(row)
 
 print("\nГотово. Результати збережено у results.csv")
