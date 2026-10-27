@@ -10,8 +10,8 @@ from importlib.metadata import version
 ROOT = Path(__file__).resolve().parent
 if Path.cwd().resolve() != ROOT:
     sys.exit("Запускайте програму з папки lab2-mahdych-olha.")
-if any((ROOT / name).exists() for name in ("lab2.log", "run_results.json", "log2.lab")):
-    sys.exit("Результати вже є. Не запускайте повторно: надішліть lab2.log і run_results.json для перевірки.")
+if any(path.exists() for path in (ROOT / "logs" / "lab2.log", ROOT / "run_results.json", ROOT / "log2.lab")):
+    sys.exit("Результати вже є. Не запускайте повторно: надішліть logs/lab2.log і run_results.json для перевірки.")
 
 import config
 from agent import run_agent, logger
@@ -42,13 +42,12 @@ try:
             raise
         save()
     results["finished_at"] = datetime.now().astimezone().isoformat()
-    logger.info(f"Оброблено задач: {len(tasks)}. Лог: lab2.log")
+    logger.info(f"Оброблено задач: {len(tasks)}. Лог: logs/lab2.log")
 finally:
     save()
     for handler in logger.handlers:
         handler.flush()
-    # Наприкінці методички зазначено log2.lab, у коді — lab2.log.
-    # Обидва файли містять один і той самий фактичний лог.
-    if (ROOT / "lab2.log").exists():
-        shutil.copyfile(ROOT / "lab2.log", ROOT / "log2.lab")
-print("ГОТОВО: lab2.log, log2.lab, run_results.json", flush=True)
+    # Спільний логер зберігає лог у папці logs; копія має назву з методички.
+    if (ROOT / "logs" / "lab2.log").exists():
+        shutil.copyfile(ROOT / "logs" / "lab2.log", ROOT / "log2.lab")
+print("ГОТОВО: logs/lab2.log, log2.lab, run_results.json", flush=True)

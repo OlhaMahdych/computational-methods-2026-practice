@@ -1,8 +1,17 @@
 """Цикл агента; історія та сирі відповіді зберігаються для перевірки."""
+import sys
+from pathlib import Path
+
 from openai import OpenAI
 import config
 from schemas import SCHEMAS
 from dispatcher import call_tool
+
+# Підключаємо спільний utils з кореня репозиторію.
+REPO_ROOT = Path(__file__).resolve().parents[4]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 from utils.lab_logger import custom_logger
 
 client = OpenAI(base_url=config.BASE_URL, api_key=config.API_KEY,
